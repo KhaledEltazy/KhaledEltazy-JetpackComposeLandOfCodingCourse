@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.android.jetpackcomposelandofcoding.ui.theme.BlueGray
 import com.android.jetpackcomposelandofcoding.ui.theme.LightBlueWhite
+import com.android.jetpackcomposelandofcoding.ui.theme.dimens
 
 @Composable
 fun SocialMediaLogIn(modifier: Modifier = Modifier,
@@ -36,7 +37,7 @@ fun SocialMediaLogIn(modifier: Modifier = Modifier,
         .clip(RoundedCornerShape(4.dp))
         .socialMedia()
         .clickable { onClick }
-        .height(40.dp),
+        .height(MaterialTheme.dimens.buttonHeight),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
