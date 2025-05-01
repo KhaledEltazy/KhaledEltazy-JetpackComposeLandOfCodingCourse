@@ -3,7 +3,9 @@ package com.android.jetpackcomposelandofcoding
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
@@ -13,6 +15,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.android.jetpackcomposelandofcoding.ui.theme.JetpackComposeLandOfCodingTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -47,21 +52,53 @@ class MainActivity : ComponentActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    var isAllTextVisible by remember {
-                        mutableStateOf(false)
+                    var count by remember {
+                        mutableStateOf(0)
                     }
-                    Text(text = "Animations are essential in a modern mobile app in order to realize a smooth and understandable user experience.".repeat(2),
-                        modifier = Modifier.padding(5.dp).background(Color.LightGray).clickable {
-                            isAllTextVisible = !isAllTextVisible
-                        }.animateContentSize(
-                            animationSpec = spring(
-                               /* stiffness = Spring.StiffnessMediumLow,*/ dampingRatio = Spring.DampingRatioMediumBouncy
-                            )
-                        ),
-                        maxLines = if(isAllTextVisible) Int.MAX_VALUE else 2,
-                        ) }
+                    Button(onClick = {
+                        count++
+                    }) {
+                        Text(text = "Add")
+                    }
+
+                    AnimatedContent(targetState = count, label = "",
+                        transitionSpec = { fadeIn() togetherWith fadeOut() }
+                    ) {
+                        Text(text = "Count ${it}")
+                    }
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun AnimationSizeChangesLesson() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        var isAllTextVisible by remember {
+            mutableStateOf(false)
+        }
+        Text(
+            text = "Animations are essential in a modern mobile app in order to realize a smooth and understandable user experience.".repeat(
+                2
+            ),
+            modifier = Modifier
+                .padding(5.dp)
+                .background(Color.LightGray)
+                .clickable {
+                    isAllTextVisible = !isAllTextVisible
+                }
+                .animateContentSize(
+                    animationSpec = spring(
+                        /* stiffness = Spring.StiffnessMediumLow,*/ dampingRatio = Spring.DampingRatioMediumBouncy
+                    )
+                ),
+            maxLines = if (isAllTextVisible) Int.MAX_VALUE else 2,
+        )
     }
 }
 
