@@ -4,11 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.android.jetpackcomposelandofcoding.disposable_effect.LifecycleListener
 import com.android.jetpackcomposelandofcoding.launched_effect.Counter
 import com.android.jetpackcomposelandofcoding.remember_coroutine_scope.NamesList
 import kotlinx.coroutines.delay
@@ -18,8 +26,37 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NamesList()
+            var screen by remember {
+                mutableStateOf("login")
+            }
+            Box(
+                modifier= Modifier.fillMaxSize(),
+                contentAlignment =  Alignment.Center
+            ){
+                Button(onClick = {
+                    screen = "home"
+                }){
+                    Text("Go to Home")
+                }
+            }
+            when(screen){
+                "login" -> LoginScreen()
+                "home" -> HomeScreen()
+            }
         }
     }
 }
 
+@Composable
+fun LoginScreen(){
+    LifecycleListener(
+        onResume = {
+            Log.d("test","on resume")
+        }
+    )
+}
+
+@Composable
+fun HomeScreen(){
+
+}
