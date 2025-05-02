@@ -1,5 +1,6 @@
 package com.android.jetpackcomposelandofcoding
 
+import NumbersList
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -26,37 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var screen by remember {
-                mutableStateOf("login")
-            }
-            Box(
-                modifier= Modifier.fillMaxSize(),
-                contentAlignment =  Alignment.Center
-            ){
-                Button(onClick = {
-                    screen = "home"
-                }){
-                    Text("Go to Home")
-                }
-            }
-            when(screen){
-                "login" -> LoginScreen()
-                "home" -> HomeScreen()
-            }
+            NumbersList()
         }
     }
-}
-
-@Composable
-fun LoginScreen(){
-    LifecycleListener(
-        onResume = {
-            Log.d("test","on resume")
-        }
-    )
-}
-
-@Composable
-fun HomeScreen(){
-
 }
