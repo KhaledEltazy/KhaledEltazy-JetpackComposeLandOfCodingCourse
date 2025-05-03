@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.android.jetpackcomposelandofcoding.screens.Person
 import com.android.jetpackcomposelandofcoding.screens.ScreenA
 import com.android.jetpackcomposelandofcoding.screens.ScreenB
 
@@ -21,28 +22,20 @@ class MainActivity : ComponentActivity() {
                     route = "screenA"
                 ) {
                     ScreenA(navigateToB = {
-                        navController.navigate("screenB/$it")
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            "person",it
+                        )
+                        navController.navigate("screenB")
                     })
                 }
 
                 composable(
-                    route = "screenB/?text={text}&id={id}",
-                    arguments = listOf(
-                        navArgument("text"){
-                            type = NavType.StringType
-                            nullable = true
-                        },
-                        navArgument("id"){
-                            type = NavType.IntType
-                            defaultValue = 100
-                        }
-                    )
+                    route = "screenB"
                 ) {
-                    it.arguments?.apply {
-                        val text = getString("text") ?: ""
-                        ScreenB(text)
-                    }
-                }
+                    navController.previousBackStackEntry?.savedStateHandle?.get<Person>("person")?.let {
+                        ScreenB(it)
+                    }                }
+
             }
         }
     }

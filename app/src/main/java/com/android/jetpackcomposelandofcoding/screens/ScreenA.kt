@@ -19,22 +19,44 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ScreenA(
-    navigateToB : (String) ->Unit
+    navigateToB : (Person) ->Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var text by remember {
+        var name by remember {
             mutableStateOf("")
         }
 
-        TextField(value = text,onValueChange = {text = it})
+        var age by remember {
+            mutableStateOf("")
+        }
+
+        var id by remember {
+            mutableStateOf("")
+        }
+
+        TextField(value = name,onValueChange = {name = it}, label = {
+            Text("Enter your Name")
+        })
 
         Spacer(modifier = Modifier.height(25.dp))
 
-        Button(onClick = {navigateToB(text)}) {
+        TextField(value = age,onValueChange = {age = it}, label = {
+            Text("Enter your Age")
+        })
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        TextField(value = id,onValueChange = {id = it}, label = {
+            Text("Enter your it")
+        })
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Button(onClick = {navigateToB(Person(name,age.toInt(),id.toInt()))}) {
             Text(text = "Go to B")
         }
     }
