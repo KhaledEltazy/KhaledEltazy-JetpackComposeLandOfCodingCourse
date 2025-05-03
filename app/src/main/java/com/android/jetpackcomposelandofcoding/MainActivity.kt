@@ -21,26 +21,25 @@ class MainActivity : ComponentActivity() {
                     route = "screenA"
                 ) {
                     ScreenA(navigateToB = {
-                        navController.navigate("screenB/$it/12")
+                        navController.navigate("screenB/$it")
                     })
                 }
 
                 composable(
-                    route = "screenB/{text}/{id}",
+                    route = "screenB/?text={text}&id={id}",
                     arguments = listOf(
                         navArgument("text"){
                             type = NavType.StringType
                             nullable = true
-                            defaultValue = ""
                         },
                         navArgument("id"){
                             type = NavType.IntType
+                            defaultValue = 100
                         }
                     )
                 ) {
                     it.arguments?.apply {
                         val text = getString("text") ?: ""
-                        val id = getInt("id")
                         ScreenB(text)
                     }
                 }
